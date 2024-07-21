@@ -7,12 +7,12 @@ public final class Wind_Change extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        getLogger().info(Color.YELLOW +this.toString()+Color.GREEN + ":: Plugin habilitado!");
+        getLogger().info("\\u001B[32m"+this.toString() + ":: Plugin habilitado!");
 
     }
 
     @Override
     public void onDisable() {
-        getLogger().info(Color.YELLOW +this.toString()+Color.GREEN + ":: plugin foi desabilitado com sucesso!!");
+        getLogger().info("\\u001B[32m"+this.toString()+ ":: plugin foi desabilitado com sucesso!!");
     }
 }
