@@ -33,7 +33,22 @@ public class OnWindActiveEvent  implements Listener {
         windCharge.setAcceleration(shooter.getLocation().getDirection().multiply(velocity));
         shooter.sendMessage("Wind ativo com :" +velocity + " de velocidade");
     }
+    @EventHandler
+    public void onWindExplodeEvent(EntityExplodeEvent event) {
+        if (event.getEntityType() == EntityType.WIND_CHARGE) {
+            event.setCancelled(true);
+            Location explodeLocation = event.getLocation();
+            Entity entity = event.getEntity();
 
+
+                    // Exibir partículas, se configurado
+                    String particle = plugin.getWindParticles().toString();
+                    if (!particle.equalsIgnoreCase("FALSE")) {
+                        Objects.requireNonNull(explodeLocation.getWorld()).spawnParticle(plugin.getWindParticles(), explodeLocation, plugin.getWindCoutParticles());
+                        Objects.requireNonNull(explodeLocation.getWorld()).spawnParticle(Particle.EXPLOSION, explodeLocation, plugin.getWindCoutParticles());
+                    }
+        }
+    }
 }
 
 //    @EventHandler
