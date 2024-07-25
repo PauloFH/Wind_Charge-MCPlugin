@@ -24,7 +24,6 @@ public class OnWindActiveEvent  implements Listener {
         double velocity = plugin.getWindSpeed();
         WindCharge windCharge = (WindCharge) event.getEntity();
         windCharge.setAcceleration(shooter.getLocation().getDirection().multiply(velocity));
-        shooter.sendMessage("Wind ativo com :" +velocity + " de velocidade");
     }
 
     @EventHandler
