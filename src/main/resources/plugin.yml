@@ -3,4 +3,8 @@ version: '1.0-SNAPSHOT'
 main: enxada.TesteRecrutamento.Wind_Change
 api-version: '1.21'
 authors: [ PauloHolanda ]
-description: Um plugin de home com Cooldown configurável, com Configuração para exibir partículas ao teletransportar e Todas as warps são salvas em um banco de dados MySQL
+description: Um plugin spigot que modifica o Wind Charge.
+commands:
+  windcharger:
+    description: Comando para configurar o Wind Charge
+    usage: /windcharge or /windcharge config <value>
