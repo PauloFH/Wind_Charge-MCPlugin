@@ -5,9 +5,23 @@
 
 O plugin `Wind_Change` gerencia a personalização do Wind Charge, permitindo controlar velocidade, particulas e a força do knockback. 
 
+
+## Instalação
+
+### automatica:
+
+1. acesse o repositório com a automação [docker](https://github.com/PauloFH/Teste-de-Recrutamento-Developer-Java-Junior)
+2. siga as instruções do repositório
+
+### manual:
+
+1. Baixe o arquivo `.jar` do plugin localizado em: `build/libs/Wind_Change-1.0-SNAPSHOT.jar`
+2. Coloque o arquivo  na pasta `plugins` do seu servidor Minecraft.
+3. Reinicie o servidor.
+
+
 ## Comandos
 
-### `/windcharger`
 
 - **Uso Básico**: Adiciona uma pilha de "Wind Charge" ao inventário do jogador que executa o comando.
 
@@ -62,21 +76,6 @@ wind-speed: 0.5
 
 - **Descrição**: Ajusta o dano de queda baseado na distância de queda do jogador.
 
-  
----
-
-## Instalação
-
-### automatica:
-
-1. acesse o repositório com a automação [docker](https://github.com/PauloFH/Teste-de-Recrutamento-Developer-Java-Junior)
-2. siga as instruções do repositório
-
-### manual:
-
-1. Baixe o arquivo `.jar` do plugin localizado em: `build/libs/Wind_Change-1.0-SNAPSHOT.jar`
-2. Coloque o arquivo  na pasta `plugins` do seu servidor Minecraft.
-3. Reinicie o servidor.
 
 ## Contato
 
