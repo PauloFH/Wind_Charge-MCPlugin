@@ -1,9 +1,9 @@
-# Wind_Change Plugin
+# Wind_Charge Plugin
 
 ---
 ## Visão Geral
 
-O plugin `Wind_Change` gerencia a personalização do Wind Charge, permitindo controlar velocidade, particulas e a força do knockback. 
+O plugin `Wind_Charge` gerencia a personalização do Wind Charge, permitindo controlar velocidade, particulas e a força do knockback. 
 
 
 ## Instalação
