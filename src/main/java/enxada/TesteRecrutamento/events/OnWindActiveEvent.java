@@ -40,6 +40,30 @@ public class OnWindActiveEvent  implements Listener {
             Location explodeLocation = event.getLocation();
             Entity entity = event.getEntity();
 
+            if (entity instanceof WindCharge windCharge) {
+                Entity shooter = (Entity) windCharge.getShooter();
+                if (shooter instanceof Player player) {
+                    double force = plugin.getWindPower();
+                    List<Entity> nearbyEntities = (List<Entity>) Objects.requireNonNull(explodeLocation.getWorld()).getNearbyEntities(explodeLocation, (force),force, force);
+                    for (Entity nearbyEntity : nearbyEntities) {
+                        if (nearbyEntity instanceof LivingEntity livingEntity) {
+                            if (!nearbyEntity.equals(player)) {
+                                applyKnockback(explodeLocation, livingEntity, force);
+                            }
+                        }
+                    }
+
+                    // Verificar se a explosão ocorre nos pés do jogador
+                    if (explodeLocation.distance(player.getLocation()) < 1) {
+                        player.setVelocity(new Vector(0, force, 0));
+                    } else {
+                        // Calcular dano de queda
+                        Location initialLocation = player.getLocation();
+                        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+                            double fallDistance = initialLocation.distance(player.getLocation());
+                            player.damage(fallDistance / 2.0);
+                        }, 1L);
+                    }
 
                     // Exibir partículas, se configurado
                     String particle = plugin.getWindParticles().toString();
@@ -47,6 +71,26 @@ public class OnWindActiveEvent  implements Listener {
                         Objects.requireNonNull(explodeLocation.getWorld()).spawnParticle(plugin.getWindParticles(), explodeLocation, plugin.getWindCoutParticles());
                         Objects.requireNonNull(explodeLocation.getWorld()).spawnParticle(Particle.EXPLOSION, explodeLocation, plugin.getWindCoutParticles());
                     }
+                }
+            }
+        }
+    }
+
+    private void applyKnockback(Location explosionLocation, Entity entity, double power) {
+        Location entityLoc = entity.getLocation();
+        double distance = entityLoc.distanceSquared(explosionLocation) / power;
+        double dx = entityLoc.getX() - explosionLocation.getX();
+        double dy = entityLoc.getY() - explosionLocation.getY();
+        double dz = entityLoc.getZ() - explosionLocation.getZ();
+        double dq = Math.sqrt(dx * dx + dy * dy + dz * dz);
+
+        if (dq != 0.0D) {
+            dx /= dq;
+            dy /= dq;
+            dz /= dq;
+            double face = (1.0D - distance) * power;
+            Vector vec = new Vector(dx * face, dy * face, dz * face);
+            entity.setVelocity(entity.getVelocity().add(vec).multiply(power));
         }
     }
 }
