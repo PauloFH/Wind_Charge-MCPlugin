@@ -9,6 +9,7 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class WindChargerTestCommand implements CommandExecutor, TabCompleter {
@@ -26,93 +27,109 @@ public class WindChargerTestCommand implements CommandExecutor, TabCompleter {
         }
 
         if (args.length == 0) {
+            // Give player a Wind Charge item
             ItemStack item = new ItemStack(Material.WIND_CHARGE, 64);
             player.getInventory().addItem(item);
+            player.sendMessage("Você recebeu 64 Wind Charges.");
             return true;
-        } else if (args.length == 3) {
-            if (args[0].equalsIgnoreCase("configure")) {
-                switch (args[1]) {
-                    case "power":
-                        try {
-                            double power = Double.parseDouble(args[2]);
-                            if (power < 0) {
-                                player.sendMessage("O valor de power não pode ser negativo.");
-                                return true;
-                            }
-                            plugin.getConfig().set("wind-power", power);
-                            plugin.saveConfig();
-                            plugin.reloadConfig();
-                            player.sendMessage("Wind Power: " + plugin.getWindPower());
-                        } catch (NumberFormatException e) {
-                            player.sendMessage("Valor inválido para power. Por favor, insira um número válido.");
+        } else if (args.length == 3 && args[0].equalsIgnoreCase("configure")) {
+            String setting = args[1].toLowerCase();
+            String value = args[2];
+
+            switch (setting) {
+                case "power":
+                    try {
+                        double power = Double.parseDouble(value);
+                        if (power < 0) {
+                            player.sendMessage("O valor de power não pode ser negativo.");
+                            return true;
                         }
-                        break;
-                    case "particles":
-                        String particle = args[2].toLowerCase();
-                        boolean particles = particle.equals("particles");
-                        if (particles) {
-                            plugin.getConfig().set("wind-particles", particle);
-                            plugin.saveConfig();
-                            plugin.reloadConfig();
-                            player.sendMessage("wind-particles: " + plugin.getWindParticles());
-                        } else {
-                            player.sendMessage("entrada inválida. Por favor, insira uma partícula válida.");
+                        plugin.getConfig().set("wind-power", power);
+                        plugin.saveConfig();
+                        plugin.reloadConfig();
+                        player.sendMessage("Wind Power alterado para " + plugin.getWindPower());
+                    } catch (NumberFormatException e) {
+                        player.sendMessage("Valor inválido para power. Insira um número válido.");
+                    }
+                    break;
+
+                case "particles":
+                    if (value.equalsIgnoreCase("true") || value.equalsIgnoreCase("false")) {
+                        plugin.getConfig().set("wind-particles", Boolean.parseBoolean(value));
+                        plugin.saveConfig();
+                        plugin.reloadConfig();
+                        player.sendMessage("Exibição de partículas alterada para " + plugin.getWindParticles());
+                    } else {
+                        player.sendMessage("Valor inválido para particles. Use 'true' ou 'false'.");
+                    }
+                    break;
+
+                case "count-particles":
+                    try {
+                        int count = Integer.parseInt(value);
+                        if (count < 0) {
+                            player.sendMessage("O valor de count-particles não pode ser negativo.");
+                            return true;
                         }
-                        break;
-                    case "count-particles":
-                        try {
-                            int count = Integer.parseInt(args[2]);
-                            if (count < 0) {
-                                player.sendMessage("O valor de count-particles não pode ser negativo.");
-                                return true;
-                            }
-                            plugin.getConfig().set("wind-count-particles", count);
-                            plugin.saveConfig();
-                            plugin.reloadConfig();
-                            player.sendMessage("Wind Count Particles: " + plugin.getWindCoutParticles());
-                        } catch (NumberFormatException e) {
-                            player.sendMessage("Valor inválido para count-particles. Por favor, insira um número válido.");
+                        plugin.getConfig().set("wind-count-particles", count);
+                        plugin.saveConfig();
+                        plugin.reloadConfig();
+                        player.sendMessage("Quantidade de partículas alterada para " + plugin.getWindCoutParticles());
+                    } catch (NumberFormatException e) {
+                        player.sendMessage("Valor inválido para count-particles. Insira um número válido.");
+                    }
+                    break;
+
+                case "speed":
+                    try {
+                        double speed = Double.parseDouble(value);
+                        if (speed < 0) {
+                            player.sendMessage("O valor de speed não pode ser negativo.");
+                            return true;
                         }
-                        break;
-                    case "speed":
-                        try {
-                            double speed = Double.parseDouble(args[2]);
-                            if (speed < 0) {
-                                player.sendMessage("O valor de speed não pode ser negativo.");
-                                return true;
-                            }
-                            plugin.getConfig().set("wind-speed", speed);
-                            plugin.saveConfig();
-                            plugin.reloadConfig();
-                            player.sendMessage("Wind Speed: " + plugin.getWindSpeed());
-                        } catch (NumberFormatException e) {
-                            player.sendMessage("Valor inválido para speed. Por favor, insira um número válido.");
-                        }
-                        break;
-                    default:
-                        player.sendMessage("Comando inválido.");
-                        break;
-                }
-                return true;
+                        plugin.getConfig().set("wind-speed", speed);
+                        plugin.saveConfig();
+                        plugin.reloadConfig();
+                        player.sendMessage("Velocidade alterada para " + plugin.getWindSpeed());
+                    } catch (NumberFormatException e) {
+                        player.sendMessage("Valor inválido para speed. Insira um número válido.");
+                    }
+                    break;
+
+                default:
+                    player.sendMessage("Configuração desconhecida. Use: power, particles, count-particles ou speed.");
+                    break;
             }
+            return true;
         } else {
-            player.sendMessage("Comando escrito incorretamente. Forma correta: \n" +
-                    " /windcharger configure <power/particles/count-particles/speed>");
+            player.sendMessage("Uso incorreto. Formato correto: /windcharger configure <power/particles/count-particles/speed> <valor>");
         }
         return true;
     }
 
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
+        if (!(sender instanceof Player)) {
+            return List.of();
+        }
 
-
-@Override
-public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-    if (args.length == 1) {
-        return List.of("configure");
-    } else if (args.length == 2) {
-        return List.of("power", "particles", "count-particles", "speed");
-    } else if (args.length == 3 && args[1].equalsIgnoreCase("particles")) {
-        return List.of("true","false");
+        if (args.length == 1) {
+            return List.of("configure");
+        } else if (args.length == 2) {
+            return Arrays.asList("power", "particles", "count-particles", "speed");
+        } else if (args.length == 3) {
+            String subCommand = args[1].toLowerCase();
+            switch (subCommand) {
+                case "particles":
+                    return Arrays.asList("true", "false");
+                case "power":
+                case "count-particles":
+                case "speed":
+                    return Arrays.asList("0", "1", "10", "100", "1000"); // Values can be adjusted
+                default:
+                    return List.of();
+            }
+        }
+        return List.of();
     }
-    return List.of();
-}
 }
