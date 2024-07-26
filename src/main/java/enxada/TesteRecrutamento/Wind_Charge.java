@@ -3,16 +3,15 @@ package enxada.TesteRecrutamento;
 import enxada.TesteRecrutamento.command.WindChargerTestCommand;
 import enxada.TesteRecrutamento.events.OnWindActiveEvent;
 import org.bukkit.Bukkit;
-import org.bukkit.Color;
 import org.bukkit.Particle;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Objects;
 
-public final class Wind_Change extends JavaPlugin {
+public final class Wind_Charge extends JavaPlugin {
    private double windPower;
-    private String windParticles;
+    private boolean windParticles;
     private double windSpeed;
     private int windCoutParticles;
 
@@ -37,7 +36,7 @@ public final class Wind_Change extends JavaPlugin {
         saveConfig();
         FileConfiguration config = getConfig();
         windPower = config.getDouble("wind-power", 0.5);
-        windParticles = config.getString("wind-particles", "false");
+        windParticles = config.getBoolean("wind-particles", false);
         windCoutParticles = config.getInt("wind-count-particles", 10);
         windSpeed = config.getDouble("wind-speed", 0.5);
         config.addDefault("wind-power", windPower);
@@ -51,8 +50,8 @@ public final class Wind_Change extends JavaPlugin {
     public float getWindPower() {
         return (float)(this.getConfig().getDouble("wind-power", 0.5));
     }
-    public Particle getWindParticles(){
-        return Particle.valueOf(this.getConfig().getString("wind-particles"));
+    public boolean getWindParticles(){
+        return Boolean.valueOf(windParticles);
     }
     public int getWindCoutParticles(){
         return this.getConfig().getInt("wind-count-particles");

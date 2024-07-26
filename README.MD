@@ -15,7 +15,7 @@ O plugin `Wind_Charge` gerencia a personalização do Wind Charge, permitindo co
 
 ### manual:
 
-1. Baixe o arquivo `.jar` do plugin localizado em: `build/libs/Wind_Change-1.0-SNAPSHOT.jar`
+1. Baixe o arquivo `.jar` do plugin localizado em: `build/libs/Wind_Charge-1.0-SNAPSHOT.jar`
 2. Coloque o arquivo  na pasta `plugins` do seu servidor Minecraft.
 3. Reinicie o servidor.
 

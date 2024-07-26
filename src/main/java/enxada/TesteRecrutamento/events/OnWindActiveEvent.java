@@ -1,6 +1,6 @@
 package enxada.TesteRecrutamento.events;
 
-import enxada.TesteRecrutamento.Wind_Change;
+import enxada.TesteRecrutamento.Wind_Charge;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.entity.*;
@@ -12,9 +12,9 @@ import java.util.Objects;
 
 
 public class OnWindActiveEvent  implements Listener {
-    private  final Wind_Change plugin;
+    private  final Wind_Charge plugin;
 
-    public OnWindActiveEvent(Wind_Change plugin) {
+    public OnWindActiveEvent(Wind_Charge plugin) {
         this.plugin = plugin;
 
     }
@@ -41,10 +41,10 @@ public class OnWindActiveEvent  implements Listener {
                 velocidade.multiply(plugin.getWindPower()/2);
                 entidade.setVelocity(velocidade);
             }
-            String particle = plugin.getWindParticles().toString();
-            if (!particle.equalsIgnoreCase("FALSE")) {
-                Objects.requireNonNull(event.getLocation().getWorld()).spawnParticle(plugin.getWindParticles(),event.getLocation(), plugin.getWindCoutParticles());
-                Objects.requireNonNull(event.getLocation().getWorld()).spawnParticle(Particle.LARGE_SMOKE, event.getLocation(), 10);
+            boolean particle = plugin.getWindParticles();
+            if (particle) {
+                Objects.requireNonNull(event.getLocation().getWorld()).spawnParticle(Particle.DRAGON_BREATH,event.getLocation(), plugin.getWindCoutParticles());
+                Objects.requireNonNull(event.getLocation().getWorld()).spawnParticle(Particle.LARGE_SMOKE, event.getLocation(), (plugin.getWindCoutParticles()/2));
             }
             soundplay(event.getLocation());
         }
